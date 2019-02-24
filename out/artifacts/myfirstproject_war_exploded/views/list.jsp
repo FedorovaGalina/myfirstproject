@@ -14,7 +14,7 @@
 
 <body>
 <div>
-    <h1>Super app!</h1>
+    <h1>Application</h1>
 </div>
 
 <div>

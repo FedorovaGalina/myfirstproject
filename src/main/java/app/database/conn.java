@@ -12,9 +12,9 @@ public class conn {
     // --------ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ--------
     public static void Conn() throws ClassNotFoundException, SQLException
     {
-        conn = null;
+        //conn = null;
         Class.forName("org.sqlite.JDBC");
-        conn = DriverManager.getConnection("jdbc:sqlite:C:\\SQLite\\TESTDB");
+        conn = DriverManager.getConnection("jdbc:sqlite:C:\\SQLite\\TESTDB");//
 
         System.out.println("База подключена.");
     }
@@ -41,9 +41,15 @@ public class conn {
     public static void WriteDB(User user) throws ClassNotFoundException, SQLException
     {
         try {
-            Conn();
-          //  statmt = conn.createStatement();
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO TestTable (name, password) VALUES ('" +user.getName()+"','"+user.getPassword()+"');");
+            Conn();//
+            //statmt = conn.createStatement();
+            //PreparedStatement statement = conn.prepareStatement("INSERT INTO TestTable (name, password) VALUES ('" +user.getName()+"','"+user.getPassword()+"');");
+            String tmpStatement = "INSERT INTO TestTable (name, password, JNDIname, Description, Category, URL, Alias, userID, TimeOut, MaxConnections, MinConnections) VALUES ('";
+            tmpStatement += user.getName() + "','" + user.getPassword() + "','" + user.getJNDIname() + "','" + user.getDescription() + "','" + user.getCategory() + "','";
+            tmpStatement += user.getURL() + "','" + user.getAlias() + "'," + user.getuserID() + "," + user.getTimeOut() + "," + user.getMaxConnections() + "," + user.getMinConnections() + ");";
+            System.out.println(tmpStatement);
+
+            PreparedStatement statement = conn.prepareStatement(tmpStatement);
             statement.execute();
             statement.close();
         } catch (Exception e) {
@@ -64,9 +70,23 @@ public class conn {
     }
 
     // -------- Вывод таблицы--------
-    public static void ReadDB() throws ClassNotFoundException, SQLException
+    public static void ReadDB(User user) throws ClassNotFoundException, SQLException
     {
-        resSet = statmt.executeQuery("SELECT * FROM TestTable");
+        String tmpStatement = "SELECT * FROM TestTable ";
+        String tmpCondition;
+        if (user.getName() != null) tmpCondition = "name like '"+user.getName()+"' AND";
+        if (user.getPassword() != null) tmpCondition += "name like '"+user.getPassword()+"' AND";
+        if (user.getJNDIname() != null) tmpCondition += "name like '"+user.getJNDIname()+"' AND";
+        if (user.getDescription() != null) tmpCondition += "name like '"+user.getDescription()+"' AND";
+        if (user.getCategory() != null) tmpCondition += "name like '"+user.getCategory()+"' AND";
+        if (user.getURL() != null) tmpCondition += "name like '"+user.getURL()+"' AND";
+        if (user.getAlias() != null) tmpCondition += "name like '"+user.getAlias()+"' AND";
+        if (user.getuserID() != null) tmpCondition += "name like '"+user.getuserID()+"' AND";
+        if (user.getTimeOut() != null) tmpCondition += "name like '"+user.getTimeOut()+"' AND";
+        if (user.getMaxConnections() != null) tmpCondition += "name like '"+user.getMaxConnections()+"' AND";
+        if (user.getMinConnections() != null) tmpCondition += "name like '"+user.getMinConnections()+"' AND";
+
+        resSet = statmt.executeQuery(tmpStatement);
 
         while(resSet.next())
         {

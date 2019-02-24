@@ -23,8 +23,18 @@ public class AddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String password = req.getParameter("pass");
-        User user = new User(name, password);
-       // Model model = Model.getInstance();
+        String JNDIname = req.getParameter("JNDIname");
+        String Description = req.getParameter("Description");
+        String Category = req.getParameter("Category");
+        String URL = req.getParameter("URL");
+        String Alias = req.getParameter("Alias");
+        int userID = req.getParameter("userID");
+        int TimeOut = req.getParameter("TimeOut");
+        int MaxConnections = req.getParameter("MaxConnections");
+        int MinConnections = req.getParameter("MinConnections");
+
+        User user = new User(name, password, JNDIname, Description, Category, URL, Alias, userID, TimeOut, MaxConnections,MinConnections);
+        // Model model = Model.getInstance();
        // model.add(user);
         try {
             conn.WriteDB(user);
